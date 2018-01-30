@@ -2,6 +2,7 @@ class Oystercard
 
   attr_reader :balance
   attr_reader :card_status
+  attr_reader :entry_station
 
   MAXIMUM_BALANCE = 90 #constant for limit of monay on card
   MINIMUM_BALANCE = 1
@@ -10,6 +11,7 @@ class Oystercard
   def initialize
     @balance = 0
     @card_status = :not_in_journey
+    @entry_station = []
   end
 
   def top_up(amount)
@@ -18,6 +20,7 @@ class Oystercard
   end
 
   def touch_in
+    @entry_station << "Makers"
     fail "Not enough credit in your card" if @balance < MINIMUM_BALANCE
     @card_status = :in_journey
   end
@@ -25,6 +28,7 @@ class Oystercard
   def touch_out
     deduct(FARE)
     @card_status = :not_in_journey
+    @entry_station = nil
   end
 
   def in_journey?

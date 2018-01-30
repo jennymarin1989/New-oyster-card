@@ -24,6 +24,8 @@ subject(:oystercard) { described_class.new }
   end
 
   describe "#touch_in" do
+    let(:entry_station) {double :entry_station}
+
     it "changes the card status to in_journey" do
       oystercard.top_up(Oystercard::MINIMUM_BALANCE)
       oystercard.touch_in
@@ -35,9 +37,17 @@ subject(:oystercard) { described_class.new }
       expect{ oystercard.touch_in }.to raise_error "Not enough credit in your card"
     end
 
+    context "when the entry station is provided" do
+    it "remember the entry station" do
+    allow(oystercard).to receive(:entry_station).and_return("Makers")
+    end
+  end
+
   end
 
   describe "#touch_out" do
+    let(:entry_station) {double :entry_station}
+
     it "changes the card status to not_in_journey" do
       oystercard.top_up(Oystercard::MINIMUM_BALANCE)
       oystercard.touch_in
@@ -52,6 +62,11 @@ subject(:oystercard) { described_class.new }
     # touch_out is calling a private method deduct, but the test will work as
     # we are actually testing our deduct method implicitly whilst testing touch_out.
   end
+
+    it "deletes the station to nil" do
+      expect{ oystercard.touch_out}.to change {oystercard.entry_station}.to be_nil
+    end
+
 
   describe "#journey?" do
     it "tells if the card is in journey" do
