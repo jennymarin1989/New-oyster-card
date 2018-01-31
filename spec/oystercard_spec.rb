@@ -5,7 +5,7 @@ describe Oystercard do
 subject(:oystercard) { described_class.new }
 let(:entry_station) {double "entry_station"}
 let(:exit_station) {double "exit_station"}
-let(:journey) {{entry_station: entry_station, exit_station: exit_station}}
+let(:journey) { double("a journey", arrive: exit_station) }
 
   it 'has initial balance of zero' do
     expect(oystercard.balance).to eq (0)
@@ -40,8 +40,8 @@ let(:journey) {{entry_station: entry_station, exit_station: exit_station}}
         oystercard.top_up(Oystercard::MINIMUM_BALANCE)
         oystercard.touch_in(entry_station)
       end
-      it "changes the card status to in_journey" do
-        expect(oystercard.card_status).to eq :in_journey
+      it "starts a journey" do
+        expect(oystercard.current_journey).not_to eq nil
       end
 
       it "remember the entry station" do
@@ -59,13 +59,15 @@ let(:journey) {{entry_station: entry_station, exit_station: exit_station}}
 
   describe "#touch_out" do
     it { is_expected.to respond_to(:top_up).with(1).argument }
+
     before(:each) do
+      allow(oystercard).to receive(:touch_in).and_return(journey)
       oystercard.top_up(Oystercard::MINIMUM_BALANCE)
       oystercard.touch_in(entry_station)
     end
-    it "changes the card status to not_in_journey" do
+    it "sets @current_journey to nil" do
       oystercard.touch_out(exit_station)
-      expect(oystercard.card_status).to eq :not_in_journey
+      expect(oystercard.current_journey).to be_nil
     end
     it "charges the card" do
       expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by(-Oystercard::FARE)
