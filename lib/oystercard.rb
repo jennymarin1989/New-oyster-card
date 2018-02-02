@@ -22,16 +22,19 @@ class Oystercard
     @current_journey = Journey.new(name_station)
   end
 
-  def touch_out(name_station)
+  def touch_out(exit_station)
     deduct(FARE)
-    @current_journey.arrive(name_station)
-    @journeys << @current_journey
+    @current_journey.finish_journey(exit_station,self)
     @current_journey = nil
-    name_station
+    exit_station
   end
 
   def in_journey?
      @card_status == :in_journey
+  end
+
+  def save_journey
+    @journeys << @current_journey
   end
 
   private

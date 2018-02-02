@@ -1,11 +1,12 @@
 require 'oystercard'
+require 'journey'
 
 describe Oystercard do
 
 subject(:oystercard) { described_class.new }
 let(:entry_station) {double "entry_station"}
 let(:exit_station) {double "exit_station"}
-let(:journey) { double("a journey", arrive: exit_station) }
+let(:journey) { Journey.new(entry_station) }
 
   it 'has initial balance of zero' do
     expect(oystercard.balance).to eq (0)
@@ -61,7 +62,7 @@ let(:journey) { double("a journey", arrive: exit_station) }
     it { is_expected.to respond_to(:top_up).with(1).argument }
 
     before(:each) do
-      allow(oystercard).to receive(:touch_in).and_return(journey)
+      p journey # allow(oystercard).to receive(:touch_in).and_return(journey)
       oystercard.top_up(Oystercard::MINIMUM_BALANCE)
       oystercard.touch_in(entry_station)
     end
@@ -78,8 +79,10 @@ let(:journey) { double("a journey", arrive: exit_station) }
     end
 
     it "Add entry and exit station into journey array" do
-      oystercard.touch_out(exit_station)
-      expect(oystercard.journeys).to include(journey)
+     journey2 = oystercard.current_journey 
+     oystercard.touch_out(exit_station)
+     p journey
+      expect(oystercard.journeys).to include(journey2)
     end
   end
 

@@ -15,7 +15,7 @@ describe Journey do
 
   describe "#arrive" do
     it "sets the exit station to the passed argument" do
-      expect(journey.arrive(exit_station)).to eq exit_station
+      expect(journey.arrive=(exit_station)).to eq exit_station
     end
   end
 
