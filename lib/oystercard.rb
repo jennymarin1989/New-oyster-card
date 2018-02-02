@@ -2,7 +2,7 @@ class Oystercard
 
   attr_reader :balance, :current_journey, :entry_station, :journeys
 
-  MAXIMUM_BALANCE = 90 #constant for limit of monay on card
+  MAXIMUM_BALANCE = 90 #constant for limit of money on card
   MINIMUM_BALANCE = 1
   FARE = 7
 
@@ -26,7 +26,6 @@ class Oystercard
     deduct(FARE)
     @current_journey.finish_journey(exit_station, self)
     @current_journey = nil
-    exit_station
   end
 
   def in_journey?
@@ -42,5 +41,4 @@ class Oystercard
   def deduct(amount)
     @balance -= amount
   end
-
 end

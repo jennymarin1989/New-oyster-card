@@ -73,16 +73,12 @@ describe Oystercard do
   describe '#touch_out' do
     it { is_expected.to respond_to(:top_up).with(1).argument }
 
-#TODO - before block
-    # before(:each) do
-    #   oyster_touched_in
-    # end
     it 'sets @current_journey to nil' do
       expect(oyster_touched_out.current_journey).to be_nil
     end
     it 'charges the card' do
       oyster_touched_in
-      expect {oyster_touched_in.touch_out(exit_station) }.to change { subject.balance }.by(-Oystercard::FARE)
+      expect {oyster_touched_in.touch_out(exit_station) }.to change { oyster_touched_in.balance }.by(-Oystercard::FARE)
     end
 
     it 'Add entry and exit station into journey array' do
@@ -93,9 +89,7 @@ describe Oystercard do
 
   describe '#journey?' do
     it 'tells if the card is in journey' do
-      oystercard.top_up(Oystercard::MINIMUM_BALANCE)
-      oystercard.touch_in(entry_station)
-      expect(oystercard).to be_in_journey
+      expect(oyster_touched_in).to be_in_journey
     end
   end
 end

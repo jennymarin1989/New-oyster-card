@@ -10,6 +10,4 @@ class Journey
     @exit_station = exit_station
     oystercard.save_journey
   end
-
-
 end
