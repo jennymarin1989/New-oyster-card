@@ -86,9 +86,8 @@ describe Oystercard do
     end
 
     it 'Add entry and exit station into journey array' do
-      journey2 = oystercard.current_journey
-      oystercard.touch_out(exit_station)
-      expect(oystercard.journeys).to include(journey2)
+      j = oyster_touched_in.current_journey
+      expect(oyster_touched_out.journeys).to include(j)
     end
   end
 
