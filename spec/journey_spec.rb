@@ -4,8 +4,9 @@ describe Journey do
 
   let(:entry_station) { double("entry station") }
   let(:exit_station) { double("exit station") }
+  let(:oystercard) {double("Oystercard")}
 
-  subject(:journey) { described_class.new(entry_station) }
+  let(:journey) { described_class.new(entry_station) }
 
   describe "#intialize" do
     it "sets the entry station to the first argument" do
@@ -15,7 +16,9 @@ describe Journey do
 
   describe "#arrive" do
     it "sets the exit station to the passed argument" do
-      expect(journey.arrive=(exit_station)).to eq exit_station
+      allow(oystercard).to receive(:save_journey)
+      journey.finish_journey(exit_station, oystercard)
+      expect(journey.exit_station).to eq exit_station
     end
   end
 

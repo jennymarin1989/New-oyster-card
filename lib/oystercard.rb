@@ -24,13 +24,13 @@ class Oystercard
 
   def touch_out(exit_station)
     deduct(FARE)
-    @current_journey.finish_journey(exit_station,self)
+    @current_journey.finish_journey(exit_station, self)
     @current_journey = nil
     exit_station
   end
 
   def in_journey?
-     @card_status == :in_journey
+     !!@current_journey
   end
 
   def save_journey
