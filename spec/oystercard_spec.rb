@@ -76,10 +76,6 @@ describe Oystercard do
     it 'sets @current_journey to nil' do
       expect(oyster_touched_out.current_journey).to be_nil
     end
-    it 'charges the card' do
-      oyster_touched_in
-      expect {oyster_touched_in.touch_out(exit_station) }.to change { oyster_touched_in.balance }.by(-Oystercard::FARE)
-    end
 
     it 'Add entry and exit station into journey array' do
       j = oyster_touched_in.current_journey
